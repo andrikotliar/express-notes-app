@@ -12,3 +12,8 @@ Production mode:
 ```
 npm run build
 ```
+
+## Technologies
+
+- Express
+- TypeScript
