@@ -1,15 +1,17 @@
 export interface NoteType {
-  id: string;
   title: string;
-  created: string;
   category: string;
   content: string;
+}
+
+export interface ExtendedNoteType extends NoteType {
+  id: string;
+  created: string;
   active: boolean;
 }
 
 export interface UpdatedNoteType {
   title?: string;
-  created?: string;
   category?: string;
   content?: string;
 }
