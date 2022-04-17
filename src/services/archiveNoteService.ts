@@ -2,9 +2,15 @@ import { archiveNote } from "../repositories/notes";
 import { Request, Response } from "express";
 
 export const archiveNoteService = (req: Request, res: Response) : void => {
-  const { id } = req.params;
+  try {
 
-  archiveNote(id);
+    const { id } = req.params;
+    archiveNote(id);
+    res.send(`Note with the id ${id} was updated!`);
 
-  res.send(`Note with the id ${id} was updated!`);
+  } catch(error) {
+
+    res.status(404).send('Note not found!');
+
+  }
 }

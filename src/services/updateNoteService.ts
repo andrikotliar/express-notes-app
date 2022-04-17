@@ -3,10 +3,14 @@ import { Request, Response } from "express";
 import { UpdatedNoteType } from "../types/notes.types";
 
 export const updateNoteService = (req: Request, res: Response) : void => {
-  const updatedData : UpdatedNoteType = req.body;
-  const { id } = req.params;
+  try {
+    const updatedData : UpdatedNoteType = req.body;
+    const { id } = req.params;
 
-  editNote(id, updatedData);
+    editNote(id, updatedData);
 
-  res.send(`Note with the id ${id} was updated!`);
+    res.send(`Note with the id ${id} was updated!`);
+  } catch (error) {
+    res.status(404).send('Note not found!');
+  }
 }
