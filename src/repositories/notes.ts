@@ -1,20 +1,21 @@
 import notes from "../data/notes.json";
-import { NoteType, UpdatedNoteType } from "../types/notes.types";
+import { ExtendedNoteType, NoteType, UpdatedNoteType } from "../types/notes.types";
 import { findNote } from "../helpers/findNote";
 
 let db = notes;
 
-export const getAllNotes = () : NoteType[] => db;
+export const getAllNotes = () : ExtendedNoteType[] => db;
 
-export const getOneNote = (id: string) : NoteType => {
+export const getOneNote = (id: string) : ExtendedNoteType => {
   return findNote(id, db);
 }
 
 export const addNote = (note: NoteType, unicId: string, created: string) : void => {
   db.push({
-    ...note,
     id: unicId,
-    created
+    ...note,
+    created,
+    active: true
   });
 }
 
