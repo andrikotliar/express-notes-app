@@ -13,6 +13,16 @@ Production mode:
 npm run build
 ```
 
+## New note template
+
+```json
+{
+  "title": "Test note",
+  "content": "Content of the test note.",
+  "category": "Idea"
+}
+```
+
 ## Technologies
 
 - Express
