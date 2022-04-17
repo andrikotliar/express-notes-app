@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from "express";
 import notesRouter from "./routes/notes";
 
 const app : Express = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(notesRouter);
