@@ -1,32 +1,20 @@
 import { Request, Response } from "express";
-import { getAllNotes } from "../repositories/notes";
-import { getCategories } from "../helpers/getCategories";
-import { addStatisticNumber } from "../helpers/addStatisticNumber";
-import { v4 as uuidv4 } from "uuid";
+import { sequelize } from "./connectToDatabase";
+import { QueryTypes } from "sequelize";
 
-export const getStatsService = (req: Request, res: Response) : void => {
-  const notes = getAllNotes();
-  const categories = getCategories(notes);
-  const stats = [];
 
-  for(let category of categories) {
-    const stat = {
-      id: uuidv4(),
-      category,
-      activeNotes: addStatisticNumber(
-        notes,
-        category,
-        true
-      ),
-      archivedNotes: addStatisticNumber(
-        notes,
-        category,
-        false
-      )
+export const getStatsService = async (req: Request, res: Response) => {
+
+  const stats = await sequelize.query(
+    `
+      SELECT category,
+      COALESCE(SUM(1) FILTER(WHERE active = true), 0) AS active,
+      COALESCE(SUM(1) FILTER(WHERE active = false), 0) AS archived FROM user_notes GROUP BY category;
+    `,
+    {
+      type: QueryTypes.SELECT
     }
-
-    stats.push(stat)
-  }
+  );
 
   res.send(stats);
 }

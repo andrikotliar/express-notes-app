@@ -1,10 +1,9 @@
 import { removeNote } from "../repositories/notes";
 import { Request, Response } from "express";
 
-export const removeNoteService = (req: Request, res: Response) : void => {
+export const removeNoteService = async (req: Request, res: Response) => {
   const { id } = req.params;
-  removeNote(id);
-
+  await removeNote(Number(id));
 
   res.send(`Note with the id ${id} was removed from database!`);
 }

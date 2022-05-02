@@ -1,16 +1,17 @@
 import { archiveNote } from "../repositories/notes";
 import { Request, Response } from "express";
 
-export const archiveNoteService = (req: Request, res: Response) : void => {
+export const archiveNoteService = async (req: Request, res: Response) => {
   try {
 
     const { id } = req.params;
-    archiveNote(id);
+    await archiveNote(Number(id));
+
     res.send(`Note with the id ${id} was updated!`);
 
   } catch(error) {
 
-    res.status(404).send('Note not found!');
+    res.status(400).send(error);
 
   }
 }

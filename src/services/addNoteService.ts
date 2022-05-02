@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { addNote } from "../repositories/notes";
-import { getCurrentDate } from "../helpers/getCurrentDate";
-import { v4 as uuidv4 } from "uuid";
 
-export const addNoteService = (req: Request, res: Response) : void => {
-  const note = req.body;
-  const unicId = uuidv4();
-  const createdDate = getCurrentDate();
+export const addNoteService = async (req: Request, res: Response) => {
+  const newNote = req.body;
 
-  addNote(note, unicId, createdDate);
+  try {
+    await addNote(newNote);
+    res.send(`Note with the title ${newNote.title} was added to the database!`);
+  } catch(error) {
+    res.status(400).send(error);
+  }
 
-  res.send(`Note with the id ${unicId} was added to the database!`);
 }

@@ -1,8 +1,8 @@
 import { getAllNotes } from "../repositories/notes";
 import { Request, Response } from "express";
 
-export const getAllNotesService = (req: Request, res: Response) : void => {
-  const notes = getAllNotes();
+export const getAllNotesService = async (req: Request, res: Response) => {
+  const notes = await getAllNotes();
 
   res.send(notes);
 }

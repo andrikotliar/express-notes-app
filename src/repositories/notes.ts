@@ -1,40 +1,48 @@
-import notes from "../data/notes.json";
-import { ExtendedNoteType, NoteType, UpdatedNoteType } from "../types/notes.types";
-import { findNote } from "../helpers/findNote";
+import { UpdatedNoteType } from "../types/notes.types";
+import Note from "../models/notes.model";
+import { Sequelize } from "sequelize";
 
-let db = notes;
+export const getAllNotes = async () : Promise<Note[]> => {
+  const notes = await Note.findAll();
+  return notes;
+};
 
-export const getAllNotes = () : ExtendedNoteType[] => db;
+export const getOneNote = async (id: number) : Promise<Note> => {
+  const note = await Note.findOne({
+    where: {
+      id
+    }
+  });
 
-export const getOneNote = (id: string) : ExtendedNoteType => {
-  return findNote(id, db);
+  return note;
 }
 
-export const addNote = (note: NoteType, unicId: string, created: string) : void => {
-  db.push({
-    id: unicId,
-    ...note,
-    created,
-    active: true
+export const addNote = async (note: Note) : Promise<void> => {
+  await Note.create(note);
+}
+
+export const removeNote = async (id: number) : Promise<void> => {
+  await Note.destroy({
+    where: {
+      id
+    }
   });
 }
 
-export const removeNote = (id: string) : void => {
-  db = db.filter(note => note.id !== id);
-}
-
-export const editNote = (id: string, updatedData: UpdatedNoteType) : void => {
-  const note = findNote(id, db);
-  const updatedParams = Object.keys(updatedData);
-
-  updatedParams.forEach(param => {
-    note[param as keyof UpdatedNoteType] = updatedData[param as keyof UpdatedNoteType]
+export const editNote = async (id: number, updatedData: UpdatedNoteType) => {
+  await Note.update(updatedData, {
+    where: {
+      id
+    }
   });
 }
 
-export const archiveNote = (id: string) : void => {
-  const note = findNote(id, db);
-  note.active ?
-    note.active = false :
-    note.active = true;
+export const archiveNote = async (id: number) => {
+  await Note.update({
+    active: Sequelize.literal('NOT active')
+  }, {
+    where: {
+      id
+    }
+  });
 }

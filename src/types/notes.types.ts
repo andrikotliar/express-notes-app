@@ -5,7 +5,7 @@ export interface NoteType {
 }
 
 export interface ExtendedNoteType extends NoteType {
-  id: string;
+  id: number;
   created: string;
   active: boolean;
 }
