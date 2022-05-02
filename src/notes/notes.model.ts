@@ -1,18 +1,23 @@
-import { Model, DataTypes } from "sequelize";
-import { ExtendedNoteType } from "../types/notes.types";
-import { sequelize } from "../services/connectToDatabase";
+import { Table, Column, Model } from 'sequelize-typescript';
+import { DataTypes } from 'sequelize';
 
-class Note extends Model<ExtendedNoteType> {}
+@Table({
+  tableName: 'user_notes',
+  timestamps: false
+})
+export class Note extends Model {
+  @Column(
+    {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+      autoIncrement: true,
+      primaryKey: true
+    }
+  )
+  id: number;
 
-Note.init({
-  id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: true,
-    autoIncrement: true,
-    primaryKey: true
-  },
-  title: {
+  @Column({
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
@@ -23,8 +28,10 @@ Note.init({
         msg: 'Fill the title'
       }
     }
-  },
-  content: {
+  })
+  title: string;
+
+  @Column({
     type: DataTypes.TEXT,
     allowNull: false,
     validate: {
@@ -35,27 +42,27 @@ Note.init({
         msg: 'Fill the content'
       }
     }
-  },
-  category: {
+  })
+  content: string;
+
+  @Column({
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: 'Random Thought'
-  },
-  active: {
+  })
+  category: string;
+
+  @Column({
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true
-  },
-  created: {
+  })
+  active: boolean;
+
+  @Column({
     type: DataTypes.DATEONLY,
     allowNull: false,
     defaultValue: DataTypes.NOW
-  }
-}, {
-  sequelize,
-  tableName: 'user_notes',
-  timestamps: false,
-  modelName: 'Note'
-});
-
-export default Note;
+  })
+  created: string;
+}
